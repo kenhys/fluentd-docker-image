@@ -23,7 +23,7 @@ X86_IMAGES := \
 
 # Define images for running on ARM platforms
 ARM_IMAGES := \
-	v1.17/armhf/debian:v1.17.1-debian-armhf-1.2,v1.17-debian-armhf-1,edge-debian-armhf \
+	v1.17/armhf/debian:v1.17.1-debian-armhf-1.3,v1.17-debian-armhf-1,edge-debian-armhf \
 
 # Define images for running on ARM64 platforms
 ARM64_IMAGES := \

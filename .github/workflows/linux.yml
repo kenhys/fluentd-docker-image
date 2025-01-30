@@ -16,6 +16,8 @@ jobs:
         include:
           - dockerfile: v1.16/alpine
           - dockerfile: v1.16/debian
+          - dockerfile: v1.16/arm64/debian
+          - dockerfile: v1.16/armhf/debian
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master

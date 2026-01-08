@@ -43,14 +43,14 @@ jobs:
             (["---","---","---","---","---","---"] | join(" | ") | "| " + . + " |"),
             (.matches[]
             | select(.vulnerability.severity != "Negligible")
-            | "| \(.artifact.name) | \(.artifact.version) | \(.vulnerability.fix.versions[0] // "") | \(.artifact.type) | \(.vulnerability.id) | \(.vulnerability.severity)|")
+            | "| \(.artifact.name) | \(.artifact.version) | \(.vulnerability.fix.versions[0] // (if .vulnerability.fix.state == "not-fixed" then "" else "(" + .vulnerability.fix.state + ")" end)) | \(.artifact.type) | \(.vulnerability.id) | \(.vulnerability.severity)|")
             ' >> $GITHUB_STEP_SUMMARY
           echo "# Scan Fluentd image with grype (details)" >> $GITHUB_STEP_SUMMARY
           docker run --rm anchore/grype:latest fluent/fluentd:$IMAGE --output json | jq --raw-output '
             (["NAME","INSTALLED","FIXED IN","TYPE","VULNERABILITY","SEVERITY"] | join(" | ") | "| " + . + " |"),
             (["---","---","---","---","---","---"] | join(" | ") | "| " + . + " |"),
             (.matches[]
-            | "| \(.artifact.name) | \(.artifact.version) | \(.vulnerability.fix.versions[0] // "") | \(.artifact.type) | \(.vulnerability.id) | \(.vulnerability.severity)|")
+            | "| \(.artifact.name) | \(.artifact.version) | \(.vulnerability.fix.versions[0] // (if .vulnerability.fix.state == "not-fixed" then "" else "(" + .vulnerability.fix.state + ")" end)) | \(.artifact.type) | \(.vulnerability.id) | \(.vulnerability.severity)|")
             ' >> $GITHUB_STEP_SUMMARY
   ruby:
     name: Scan Ruby image with grype
@@ -67,14 +67,14 @@ jobs:
             (["---","---","---","---","---","---"] | join(" | ") | "| " + . + " |"),
             (.matches[]
             | select(.vulnerability.severity != "Negligible")
-            | "| \(.artifact.name) | \(.artifact.version) | \(.vulnerability.fix.versions[0] // "") | \(.artifact.type) | \(.vulnerability.id) | \(.vulnerability.severity)|")
+            | "| \(.artifact.name) | \(.artifact.version) | \(.vulnerability.fix.versions[0] // (if .vulnerability.fix.state == "not-fixed" then "" else "(" + .vulnerability.fix.state + ")" end)) | \(.artifact.type) | \(.vulnerability.id) | \(.vulnerability.severity)|")
             ' >> $GITHUB_STEP_SUMMARY
           echo "# Scan Ruby image with grype (details)" >> $GITHUB_STEP_SUMMARY
           docker run --rm anchore/grype:latest ruby:3.4-slim --output json | jq --raw-output '
             (["NAME","INSTALLED","FIXED IN","TYPE","VULNERABILITY","SEVERITY"] | join(" | ") | "| " + . + " |"),
             (["---","---","---","---","---","---"] | join(" | ") | "| " + . + " |"),
             (.matches[]
-            | "| \(.artifact.name) | \(.artifact.version) | \(.vulnerability.fix.versions[0] // "") | \(.artifact.type) | \(.vulnerability.id) | \(.vulnerability.severity)|")
+            | "| \(.artifact.name) | \(.artifact.version) | \(.vulnerability.fix.versions[0] // (if .vulnerability.fix.state == "not-fixed" then "" else "(" + .vulnerability.fix.state + ")" end)) | \(.artifact.type) | \(.vulnerability.id) | \(.vulnerability.severity)|")
             ' >> $GITHUB_STEP_SUMMARY
   debian:
     name: Scan debian image with grype
@@ -91,12 +91,12 @@ jobs:
             (["---","---","---","---","---","---"] | join(" | ") | "| " + . + " |"),
             (.matches[]
             | select(.vulnerability.severity != "Negligible")
-            | "| \(.artifact.name) | \(.artifact.version) | \(.vulnerability.fix.versions[0] // "") | \(.artifact.type) | \(.vulnerability.id) | \(.vulnerability.severity)|")
+            | "| \(.artifact.name) | \(.artifact.version) | \(.vulnerability.fix.versions[0] // (if .vulnerability.fix.state == "not-fixed" then "" else "(" + .vulnerability.fix.state + ")" end)) | \(.artifact.type) | \(.vulnerability.id) | \(.vulnerability.severity)|")
             ' >> $GITHUB_STEP_SUMMARY
           echo "# Scan debian image with grype (details)" >> $GITHUB_STEP_SUMMARY
           docker run --rm anchore/grype:latest debian:trixie --output json | jq --raw-output '
             (["NAME","INSTALLED","FIXED IN","TYPE","VULNERABILITY","SEVERITY"] | join(" | ") | "| " + . + " |"),
             (["---","---","---","---","---","---"] | join(" | ") | "| " + . + " |"),
             (.matches[]
-            | "| \(.artifact.name) | \(.artifact.version) | \(.vulnerability.fix.versions[0] // "") | \(.artifact.type) | \(.vulnerability.id) | \(.vulnerability.severity)|")
+            | "| \(.artifact.name) | \(.artifact.version) | \(.vulnerability.fix.versions[0] // (if .vulnerability.fix.state == "not-fixed" then "" else "(" + .vulnerability.fix.state + ")" end)) | \(.artifact.type) | \(.vulnerability.id) | \(.vulnerability.severity)|")
             ' >> $GITHUB_STEP_SUMMARY

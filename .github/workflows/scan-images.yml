@@ -38,7 +38,7 @@ jobs:
           # v1.19.1-debian-amd64
           IMAGE=$(make echo-all-images | cut -d' ' -f1|cut -d',' -f3)
           echo "# Scan Fluentd image with grype (filter)" >> $GITHUB_STEP_SUMMARY
-          docker run --rm anchore/grype:latest fluent/fluentd:$IMAGE --ignore-states wont-fix | jq -r '
+          docker run --rm anchore/grype:latest fluent/fluentd:$IMAGE --ignore-states wont-fix --output json | jq -r '
             (["NAME","INSTALLED","FIXED IN","TYPE","VULNERABILITY","SEVERITY"] | join(" | ") | "| " + . + " |"),
             (["---","---","---","---","---","---"] | join(" | ") | "| " + . + " |"),
             (.matches[]
@@ -46,7 +46,7 @@ jobs:
             | "| \(.artifact.name) | \(.artifact.version) | \(.vulnerability.fix.versions[0] // "") | \(.artifact.type) | \(.vulnerability.id) | \(.vulnerability.severity)|")
             ' >> $GITHUB_STEP_SUMMARY
           echo "# Scan Fluentd image with grype (details)" >> $GITHUB_STEP_SUMMARY
-          docker run --rm anchore/grype:latest fluent/fluentd:$IMAGE | jq -r '
+          docker run --rm anchore/grype:latest fluent/fluentd:$IMAGE --output json | jq -r '
             (["NAME","INSTALLED","FIXED IN","TYPE","VULNERABILITY","SEVERITY"] | join(" | ") | "| " + . + " |"),
             (["---","---","---","---","---","---"] | join(" | ") | "| " + . + " |"),
             (.matches[]

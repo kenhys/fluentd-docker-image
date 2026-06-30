@@ -12,6 +12,7 @@ runs:
     - name: Scan Given image with grype (filter)
       shell: bash
       run: |
+        docker pull ${{ inputs.image_name }}
         echo "# Scan ${{ inputs.image_name }} image with grype (filter)" >> $GITHUB_STEP_SUMMARY
         docker run --rm anchore/grype:latest ${{ inputs.image_name }} --ignore-states wont-fix --output json | jq --raw-output '
           (["NAME","INSTALLED","FIXED IN","TYPE","VULNERABILITY","SEVERITY"] | join(" | ") | "| " + . + " |"),
